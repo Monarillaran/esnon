@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Hit Test</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="500" height="500"></canvas>
+
+<script>
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+const circle = {
+    x: 250,
+    y: 250,
+    radius: 50,
+    color: 'blue'
+};
+
+// Draw the circle
+function drawCircle() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = circle.color;
+    ctx.fill();
+    ctx.closePath();
+}
+
+// Check if the point is inside the circle
+function isPointInCircle(x, y, circle) {
+    const dx = x - circle.x;
+    const dy = y - circle.y;
+    return dx * dx + dy * dy <= circle.radius * circle.radius;
+}
+
+canvas.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    if (isPointInCircle(mouseX, mouseY, circle)) {
+        circle.color = 'red';
+    } else {
+        circle.color = 'blue';
+    }
+
+    drawCircle();
+});
+
+// Initial draw
+drawCircle();
+</script>
+
+</body>
+</html>
